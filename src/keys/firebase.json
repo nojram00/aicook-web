@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "putahe-mobile-app",
+  "private_key_id": "bd1cd2217500fbc21939251d1a571082f4af4589",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDBZrhoGrly3imo\n/YHfvVklfoILonV2ELnoukY6XcWry4vARJfdwmMtQ8xLV50iKBjYETRmbkfCSSxO\nhUbG/gk6Q9G4vjVVGLp8aB+WvUQU/MPnT57n0U6vaaSaIep+7pmMu8pmpUFXnbCY\nW4sQXTCf1mHmLF9TdkQjl8r/8CRn1elWZvdgGeRPc1Y2JnBFtsSyF2QyUyOr5B2w\na5TP14TqhQVgtbCFZKOgKWef4Yapka3GDeqyBmevElgAWOVUL31UTBT3xcICbjVk\nDNl+n1SYJCiNtj0BihFFy/YIW2BIGTa2P1dTdO2Q1KZJddCWlzO5ai14DA98uh2c\nU7wu+LBXAgMBAAECggEAWOgvStBKQ1eFAEY135SMeDONderDo7hxtl53bVpxRhYG\n0ybVR6EWdZcOwe3vcuXK8f0KwTHeNB7uStRy4oSi2lGWBh8OpmV9STaWmvW76AgA\nyQOtsbTjPrlKbX687YgjN3KWy5QZkz0PEyM2LRoiAcCMdcMdOWGLVm9v5zNOkRqU\nwjeFtPfWbOLrDpvACurMaTeoir2rp4qHUwk09Uf4tbdk3IcsJ5vMT6YLj7Mj7xiR\n9ZIE4nm+Op5wKSWxhNxj7lpyTWbTXV3JQzlMknCSRxpg/wFzLp943umsKFDWy+2/\nuo+6w+NdCynQ763cDpAHSlnRpnpbf3MHSG6sBC1mHQKBgQDr2B3LLAB137a6gtiK\nj+ailZLb2m8O+lt0fo4SnGrKotR3ZCZclCJtp7AcFPfcm19Q2DwrlN/OyyfuvwqW\npaQVknw65XFoEarYMPZlx919uVF4fGzlZeZIfJij2sUy4u+vtWb2/wsOHMjur/sx\n47q5BnT2aX7JqvVhtKB50IbSmwKBgQDR7gWaeezEQ9ZSPvdbKEjgPrxElUXm1zeq\no4YZBbtEfW8HFMOQIU1k0yE3ImzK0IHCtAeoVCBvXH56IlScYlnKs21a4MS0HIFr\nmAEhRZcJeEkkdYzGSbMkoiSDldOI6G91SLGeIQef1IQSKszYc2C22yyd7zW0cBe8\ntEM/1FyG9QKBgH0ZfvxFU90ylI+sVkZxfEojgunhnOVaAWbytlPC6paf9ol58ytK\nXFTEDRNoP+2h8NZGTOxlJK5hbsYiSfCM3lOfBwyKpjQoovHYTurAMIm+4itB/NVV\nzugGR0UrB00tuSv/0iUUNf3/YMnTSTA2dtYsSaBnZxx79XslP7Y92TYfAoGAb10D\nH/V6AouyECNS+MqgDkV5fjBpypF0+FKS+oct1qFr2qfLLpRcCBZwUl0ytUxy6aSz\nQzqNkkXQ2l2H4QXTeFJCuqjt8FYG2drjDpFqFB35PxwUt8O1AsP49szuUHxtVBxi\nDO6cqs8D2NdXn6NlNNuECawyIywri3FdE2lGRFkCgYBjKTdJ1HrMFa3FGKa8Q1EV\n4LeBbdnyHYrhJZdydXGwNP7nV0PvcT4sCPkyLUljLWaZvTNKFXtPInLc3fgz2OBz\nQYJ3Bb5+LWmwNkrpemMgkdluhTl90HpL67vmwry4xdyDOEVtNL6vOvSbnxkUj1ei\ntuYDJuSH6CrhuQxEHn2ibg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@putahe-mobile-app.iam.gserviceaccount.com",
+  "client_id": "111175196279135013690",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40putahe-mobile-app.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
