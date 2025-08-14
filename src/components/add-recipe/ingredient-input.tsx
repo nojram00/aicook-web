@@ -23,6 +23,7 @@ export default function IngredientInput(prop : IngredientProp) {
       />
       <button
         type="button"
+        onClick={prop.remove_callback}
         className="px-3 py-2 text-red-600 hover:text-red-800"
       >
         ×
