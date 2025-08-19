@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { FormEvent, forwardRef, useEffect, useState } from "react";
 import Instructions from "./add-recipe/instructions";
 import Ingredients from "./add-recipe/ingredients";
 import useFirebase from "@/hooks/useFirebase";
+import { useApi } from "@/hooks/useFetch";
+import { useRecipe } from "@/providers/recipeProvider";
+import { Recipe } from "@/interfaces/recipe";
+import { DocumentData, DocumentReference } from "firebase/firestore";
 
 interface RecipeModalProps {
   onClose?: () => void;
@@ -15,6 +20,11 @@ const CreateRecipeModal = forwardRef<HTMLDialogElement, RecipeModalProps>(
     const { useFirestore, useFireauth } = useFirebase()
     const { create } = useFirestore()
     const { getSession } = useFireauth()
+
+    const { create: createRecipe } = useRecipe();
+
+    const { post } = useApi({ url: '/api/recipe/upload' });
+
     const [userData, setUserData] = useState<{
         userId : string,
         name: string,
@@ -34,7 +44,7 @@ const CreateRecipeModal = forwardRef<HTMLDialogElement, RecipeModalProps>(
         })
     }, [])
 
-    const handleSubmission = (e : FormEvent) => {
+    const handleSubmission = (e : FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         const formData = new FormData(e.target as HTMLFormElement)
@@ -49,7 +59,14 @@ const CreateRecipeModal = forwardRef<HTMLDialogElement, RecipeModalProps>(
             }
         })
 
-       const entries = Object.entries(Object.fromEntries(formData)).filter(([key]) => key !== 'image')
+       const entries = Object.entries(Object.fromEntries(formData)).filter(([key]) => key !== 'image').reduce<
+       Record<string, FormDataEntryValue>>((prev, [k, v]) => {
+          if(k !== 'ingredient_amount' && k !== 'ingredient_name'){
+            prev[k] = v
+          }
+
+          return prev;
+       }, {})
 
         const data = {
             ...entries,
@@ -60,9 +77,15 @@ const CreateRecipeModal = forwardRef<HTMLDialogElement, RecipeModalProps>(
 
         console.log(data);
 
-        create('recipes', data).then(res => {
+        // create('recipes', data).then(res => {
+        //     console.log(res)
+        // })
+
+        if(createRecipe){
+          createRecipe(data).then((res : any) => {
             console.log(res)
-        })
+          })
+        }
     }
 
     return (

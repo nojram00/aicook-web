@@ -12,7 +12,7 @@ export default function useCookie() {
       setCookieStore(window.cookieStore);
 
       const handleCookieChange = (e: any) => {
-        console.log("Cookie Changed. ", e.changed);
+        // console.log("Cookie Changed. ", e.changed);
         // Refresh cookies when they change
         window.cookieStore?.getAll().then(setCookies);
       };

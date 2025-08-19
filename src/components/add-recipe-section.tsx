@@ -2,11 +2,14 @@
 import React, { useRef } from 'react'
 import AddRecipeFab from './add-recipe-fab'
 import CreateRecipeModal from './add-recipe-modal'
+import { useProfile } from '@/providers/userProvider';
 
 
 export default function AddRecipeSection() {
 
   const modalRef = useRef<HTMLDialogElement>(null)  
+
+  const { user } = useProfile()
 
   const openModal = () => {
     if(modalRef.current){
@@ -22,7 +25,7 @@ export default function AddRecipeSection() {
 
   return (
     <section>
-        <AddRecipeFab onClick={openModal}/>
+        { user && <AddRecipeFab onClick={openModal}/>}
         <CreateRecipeModal ref={modalRef} onClose={closeModal}/>
     </section>
   )

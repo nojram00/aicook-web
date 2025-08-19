@@ -12,7 +12,7 @@ export default function GoogleLoginBtn() {
     googleLogin()
       .then((cred) => {
         cred.user.getIdTokenResult().then((token) => {
-          console.log(token.claims);
+          // console.log(token.claims);
           setCookie("token", token.token)
         })
       })

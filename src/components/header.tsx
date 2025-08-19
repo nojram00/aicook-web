@@ -4,9 +4,10 @@
 import { useEffect, useRef, useState } from "react";
 import Navbar from "./navbar";
 import Modal from "./sign-in-modal";
-import { useApi, useFetch } from "@/hooks/useFetch";
+import { useApi } from "@/hooks/useFetch";
 import React from "react";
 import useCookie from "@/hooks/useCookies";
+import LogoutBtn from "./logout-btn";
 
 export default function Header() {
   // Verify Auth:
@@ -14,14 +15,15 @@ export default function Header() {
   const [signedIn, setSignedIn] = useState(false);
   const { post } = useApi({ url: "/api/auth/verify" });
 
+
   useEffect(() => {
     if (cookies && cookies.length > 0) {
       const tokenCookie = cookies.find(
         (cookie: { name: string; value: string }) => cookie.name === "token"
       );
 
-      console.log("Cookies: ", cookies);
-      console.log("Token: ", tokenCookie);
+      // console.log("Cookies: ", cookies);
+      // console.log("Token: ", tokenCookie);
 
       if (tokenCookie) {
         const token = tokenCookie.value as string;
@@ -32,7 +34,7 @@ export default function Header() {
         )
           .then((res) => {
             const { valid } = res;
-            console.log(valid);
+            // console.log(valid);
             setSignedIn(valid);
           })
           .catch((err: any) => {
@@ -101,9 +103,7 @@ export default function Header() {
             </div>
 
             {signedIn ? (
-              <button className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors">
-                Logout
-              </button>
+              <LogoutBtn />
             ) : (
               <React.Fragment>
                 <button

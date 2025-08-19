@@ -2,7 +2,7 @@ interface RecipeCardProps {
   title: string;
   time: string;
   difficulty: string;
-  rating: string;
+  rating?: string;
   imageUrl?: string;
   onClick?: () => void;
 }
@@ -11,7 +11,7 @@ export default function RecipeCard({
   title, 
   time, 
   difficulty, 
-  rating, 
+  rating = "0", 
   imageUrl,
 }: RecipeCardProps) {
   return (

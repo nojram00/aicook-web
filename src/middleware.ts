@@ -25,7 +25,7 @@ export async function middleware(request: NextRequest) {
 
   const { valid } : { valid : boolean } = await verifyTokenEdge(token, request)
 
-  console.log("Is Valid Token? ", valid);
+  // console.log("Is Valid Token? ", valid);
 
   if(!valid){
     request.cookies.delete('token');

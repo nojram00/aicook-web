@@ -3,6 +3,7 @@ import { initializeApp, getApps, cert, ServiceAccount, App } from 'firebase-admi
 import { getFirestore } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
 import 'server-only';
+import { WhereFilterOp } from 'firebase/firestore';
 
 function env(key : string){
     return process.env[key]
@@ -12,7 +13,7 @@ const account = {
     type: env('TYPE'),
     project_id: env('PROJECT_ID'),
     private_key_id: env('PRIVATE_KEY_ID'),
-    private_key: env('PRIVATE_KEY'),
+    private_key: env('PRIVATE_KEY')?.replace(/\n/g, '\n'),
     client_email: env('CLIENT_EMAIL'),
     client_id: env('CLIENT_ID'),
     auth_uri: env('AUTH_URI'),
@@ -62,6 +63,30 @@ class Firestore {
     async get(collection_name: string, id: string){
         return await this.instance.collection(collection_name).doc(id).get();
     }
+
+    async docs(collection_name: string){
+        return await this.instance.collection(collection_name).listDocuments();
+    }
+
+    async query(collection_name: string, query : {
+        path: string;
+        op: WhereFilterOp;
+        value: string | any;
+    }){
+        return await this.instance.collection(collection_name).where(
+            query.path,
+            query.op,
+            query.value
+        ).get()
+    }
+
+    async eq(collection_name: string, path: string, value: any){
+        return await this.instance.collection(collection_name).where(
+            path,
+            '==',
+            value
+        ).get()
+    }
 }
 
 class Fireauth {
@@ -73,6 +98,11 @@ class Fireauth {
 
     async verifyToken(token: string){
         return await this.instance.verifyIdToken(token);
+    }
+
+    async invalidateToken(uid: string){
+        // Revoke all refresh tokens for the user
+        return await this.instance.revokeRefreshTokens(uid);
     }
 
     async getUser(uid: string){

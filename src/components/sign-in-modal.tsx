@@ -25,14 +25,14 @@ const Modal = forwardRef<HTMLDialogElement, SignInModalProps>(
             const user = await login(email as string, password as string);
 
             if(user){
-                console.log(user.user.uid);
+                // console.log(user.user.uid);
                 const token = await user.user.getIdToken()
-                console.log(token);
+                // console.log(token);
                 setCookie('token', token);
             }
         }
         catch (err) {
-            console.error(err);
+            // console.error(err);
             alert("Invalid Login Credentials. Please Try Again")
         }
     }  
@@ -42,13 +42,13 @@ const Modal = forwardRef<HTMLDialogElement, SignInModalProps>(
             const response = await googleLogin()
 
             if(response.user){
-                console.log(response.user.uid)
+                // console.log(response.user.uid)
                 const token = await response.user.getIdToken()
-                console.log(token);
+                // console.log(token);
                 setCookie('token', token);
             }
         } catch (error) {
-            console.error(error);
+            console.warn(error);
 
             alert("Something Went Wrong!")
         }
