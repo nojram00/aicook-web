@@ -1,15 +1,18 @@
 "use server";
 
+import { getBaseUrl } from "@/api-helper/base-url";
 import { cookies } from "next/headers";
 
 export async function logout(){
     const c = await cookies();
     const token = c.get('token');
 
+    const baseUrl = getBaseUrl()
+
     if(token){
         try {
             // Call the invalidate API
-            const response = await fetch('/api/auth/invalidate', {
+            const response = await fetch(baseUrl + '/api/auth/invalidate', {
                 method: 'POST',
                 headers: {
                     'Cookie': `token=${token.value}`
