@@ -1,12 +1,8 @@
 'use client'
-
-import { useProfile } from "@/providers/userProvider";
 import Link from "next/link";
 import React from "react";
 
 export default function Navbar() {
-  
-  const { user } = useProfile();
 
   return (
     <nav className="hidden md:flex space-x-8">

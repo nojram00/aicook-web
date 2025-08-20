@@ -174,3 +174,26 @@ dialog[open]{
     background-color: gray;
   }
 }
+
+.profile-icon,
+.search-bar {
+  display: block;
+}
+
+.sidebar {
+  @apply fixed min-h-screen bg-white w-screen;
+  transition: right 300ms ease-in-out;
+  top: 0;
+  right: -100%;
+}
+
+.sidebar[data-open] {
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .profile-icon,
+  .search-bar {
+    display: none;
+  }
+}

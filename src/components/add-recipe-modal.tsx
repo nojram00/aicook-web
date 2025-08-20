@@ -91,7 +91,7 @@ const CreateRecipeModal = forwardRef<HTMLDialogElement, RecipeModalProps>(
     return (
       <dialog
         ref={ref}
-        className="backdrop:bg-black/50 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg p-0 max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+        className="backdrop:bg-black/50 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg p-0 max-w-4xl w-full max-h-[90vh] overflow-y-auto modal"
       >
         <div className="bg-white rounded-lg p-6 w-full">
           {/* Header */}

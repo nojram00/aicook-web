@@ -7,8 +7,8 @@ import Modal from "./sign-in-modal";
 import { useApi } from "@/hooks/useFetch";
 import React from "react";
 import useCookie from "@/hooks/useCookies";
-import LogoutBtn from "./logout-btn";
 import ProfileIcon from "./profile-icon";
+import { Sidebar } from "./sidebar";
 
 export default function Header() {
   // Verify Auth:
@@ -49,6 +49,15 @@ export default function Header() {
   }, [cookies, post]);
 
   const modalRef = useRef<HTMLDialogElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
+  const toggleSidebar = () => {
+    if (sidebarRef.current) {
+      const sidebar = sidebarRef.current;
+
+      sidebar.toggleAttribute('data-open')
+    }
+  }
 
   const openModal = () => {
     if (modalRef.current) {
@@ -82,7 +91,7 @@ export default function Header() {
 
           {/* Search and Auth */}
           <div className="flex items-center space-x-4">
-            <div className="relative">
+            <div className="relative search-bar">
               <input
                 type="text"
                 placeholder="Search recipes..."
@@ -109,7 +118,7 @@ export default function Header() {
               <React.Fragment>
                 <button
                   onClick={openModal}
-                  className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors"
+                  className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors md:hidden"
                 >
                   Sign In
                 </button>
@@ -121,7 +130,7 @@ export default function Header() {
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <button className="text-gray-700 hover:text-gray-900">
+            <button onClick={toggleSidebar} className="text-gray-700 hover:text-gray-900">
               <svg
                 className="h-6 w-6"
                 fill="none"
@@ -136,6 +145,8 @@ export default function Header() {
                 />
               </svg>
             </button>
+
+            <Sidebar ref={sidebarRef} toggle={toggleSidebar}/>
           </div>
         </div>
       </div>
