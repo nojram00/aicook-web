@@ -28,7 +28,7 @@ export default async function RecipePage() {
     }).then(res => res.json())
     .catch(() => console.warn("Token Invalid"))
 
-    if(data){
+    if(data?.valid){
       validated = true;
     }
   }
