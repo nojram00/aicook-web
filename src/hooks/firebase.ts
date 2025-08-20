@@ -25,6 +25,7 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
+import { getAnalytics, logEvent } from "firebase/analytics";
 import { useCallback, useState } from "react";
 
 // Initialize firebase:
@@ -42,6 +43,7 @@ const app = initializeApp(config);
 
 const firestore = getFirestore(app);
 const fireauth = getAuth(app);
+const analytics = getAnalytics(app)
 
 export function useFirestore() {
   const collections = useCallback(function _collections<T>(
@@ -233,5 +235,15 @@ export function useFireauth(){
         waitForAuth,
         getSession,
         logout
+    }
+}
+
+export function useAnalytics(){
+    const logSignIn = useCallback(function logSignIn(params : { uid: string, login_type: string }){
+        logEvent(analytics, 'login', params)
+    }, [])
+
+    return {
+        logSignIn
     }
 }

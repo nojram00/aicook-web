@@ -1,7 +1,7 @@
 'use client'
 
+import { useAnalytics, useFireauth } from "@/hooks/firebase";
 import useCookie from "@/hooks/useCookies";
-import useFirebase from "@/hooks/useFirebase";
 import { FormEvent, forwardRef } from "react";
 
 interface SignInModalProps {
@@ -11,8 +11,8 @@ interface SignInModalProps {
 const Modal = forwardRef<HTMLDialogElement, SignInModalProps>(
   function SigninModal({ onClose }, ref) {
 
-    const { useFireauth } = useFirebase()
     const { login, googleLogin } = useFireauth()
+    const { logSignIn } = useAnalytics()
 
     const { setCookie } = useCookie()
 
@@ -22,16 +22,21 @@ const Modal = forwardRef<HTMLDialogElement, SignInModalProps>(
             const formData = new FormData(e.target as HTMLFormElement);
     
             const { email, password } = Object.fromEntries(formData);
-            const user = await login(email as string, password as string);
+            const response = await login(email as string, password as string);
 
-            if(user){
+            if(response){
                 // console.log(user.user.uid);
-                const token = await user.user.getIdToken()
+                const token = await response.user.getIdToken()
                 // console.log(token);
                 setCookie('token', token);
+
+                logSignIn({
+                  uid: response.user.uid,
+                  login_type: 'credentials'
+                })
             }
         }
-        catch (err) {
+        catch {
             // console.error(err);
             alert("Invalid Login Credentials. Please Try Again")
         }
@@ -46,6 +51,11 @@ const Modal = forwardRef<HTMLDialogElement, SignInModalProps>(
                 const token = await response.user.getIdToken()
                 // console.log(token);
                 setCookie('token', token);
+
+                logSignIn({
+                  uid: response.user.uid,
+                  login_type: 'google'
+                })
             }
         } catch (error) {
             console.warn(error);
