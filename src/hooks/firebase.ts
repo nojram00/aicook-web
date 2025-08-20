@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
 import { initializeApp } from "firebase/app";
 import {
   addDoc,
@@ -25,8 +27,13 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { getAnalytics, logEvent } from "firebase/analytics";
-import { useCallback, useState } from "react";
+import {
+  Analytics,
+  getAnalytics,
+  isSupported,
+  logEvent,
+} from "firebase/analytics";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // Initialize firebase:
 
@@ -43,7 +50,6 @@ const app = initializeApp(config);
 
 const firestore = getFirestore(app);
 const fireauth = getAuth(app);
-const analytics = getAnalytics(app)
 
 export function useFirestore() {
   const collections = useCallback(function _collections<T>(
@@ -51,38 +57,45 @@ export function useFirestore() {
   ) {
     const collectionRef = collection(firestore, collection_name);
 
-    function queries(...ops: Array<(q: Query<DocumentData>) => Query<DocumentData>>){
-        return () => ops.reduce((acc, fn) => fn(acc), query(collectionRef))
+    function queries(
+      ...ops: Array<(q: Query<DocumentData>) => Query<DocumentData>>
+    ) {
+      return () => ops.reduce((acc, fn) => fn(acc), query(collectionRef));
     }
 
-    async function constraints(...ops: Array<QueryConstraint>){
-        const c = () => query(collectionRef, ...ops)
+    async function constraints(...ops: Array<QueryConstraint>) {
+      const c = () => query(collectionRef, ...ops);
 
-        const snapshot = await getDocs(c());
+      const snapshot = await getDocs(c());
 
-        const data = snapshot.docs.map(doc => ({
+      const data = snapshot.docs.map(
+        (doc) =>
+          ({
             id: doc.id,
-            ...doc.data()
-        } as T & { id: string }));
+            ...doc.data(),
+          } as T & { id: string })
+      );
 
-        return { data, snapshot }
+      return { data, snapshot };
     }
 
-    return { queries, constraints, collectionRef }
+    return { queries, constraints, collectionRef };
   },
   []);
 
-  const all = useCallback(async function all<T>(collection_name: string){
-
+  const all = useCallback(async function all<T>(collection_name: string) {
     const collectionRef = collection(firestore, collection_name);
 
     const snapshot = await getDocs(collectionRef);
 
-    return snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-    } as T & { id: string }));
-  }, [])
+    return snapshot.docs.map(
+      (doc) =>
+        ({
+          id: doc.id,
+          ...doc.data(),
+        } as T & { id: string })
+    );
+  }, []);
 
   const create = useCallback(function _create(
     collection_name: string,
@@ -105,11 +118,11 @@ export function useFirestore() {
   },
   []);
 
-  const find = useCallback(function find(collection_name : string, id: string){
+  const find = useCallback(function find(collection_name: string, id: string) {
     const docRef = doc(firestore, `${collection_name}/${id}`);
 
-    return docRef
-  }, [])
+    return docRef;
+  }, []);
 
   const [lastDoc, setLastDoc] =
     useState<QueryDocumentSnapshot<DocumentData> | null>(null);
@@ -143,10 +156,13 @@ export function useFirestore() {
         setLastDoc(_docs[docs.length - 1]);
       }
 
-      return _docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as T & {id: string}));
+      return _docs.map(
+        (doc) =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          } as T & { id: string })
+      );
     },
     []),
 
@@ -174,10 +190,13 @@ export function useFirestore() {
         setLastDoc(_docs[docs.length - 1]);
       }
 
-      return _docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as T & { id: string }));
+      return _docs.map(
+        (doc) =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          } as T & { id: string })
+      );
     },
     []),
   };
@@ -192,58 +211,73 @@ export function useFirestore() {
   };
 }
 
+export function useFireauth() {
+  const auth = useCallback(function auth() {
+    return fireauth;
+  }, []);
 
-export function useFireauth(){
+  const login = useCallback(function login(email: string, password: string) {
+    return signInWithEmailAndPassword(fireauth, email, password);
+  }, []);
 
-    const auth = useCallback(function auth(){
-        return fireauth
-    }, [])
+  const googleLogin = useCallback(function googleLogin() {
+    const provider = new GoogleAuthProvider();
 
-    const login = useCallback(function login(email: string, password: string){
-        return signInWithEmailAndPassword(fireauth, email, password)
-    }, [])
+    return signInWithPopup(fireauth, provider);
+  }, []);
 
-    const googleLogin = useCallback(function googleLogin(){
-        const provider = new GoogleAuthProvider();
+  const waitForAuth = useCallback(function waitForAuth() {
+    return new Promise<void>((res) => {
+      const unsubscribe = onAuthStateChanged(fireauth, () => {
+        unsubscribe(), res();
+      });
+    });
+  }, []);
 
-        return signInWithPopup(fireauth, provider);
-    }, [])
+  const getSession = useCallback(async function getSession() {
+    await waitForAuth();
+    const user = fireauth.currentUser;
 
-    const waitForAuth = useCallback(function waitForAuth(){
-        return new Promise<void>((res) => {
-            const unsubscribe = onAuthStateChanged(fireauth, () => {
-              unsubscribe(), res();
-            });
-          });
-    }, [])
+    return user;
+  }, []);
 
-    const getSession = useCallback(async function getSession(){
-        await waitForAuth();
-        const user = fireauth.currentUser
+  const logout = useCallback(function logout() {
+    return signOut(fireauth);
+  }, []);
 
-        return user
-    }, [])
-
-    const logout = useCallback(function logout(){
-        return signOut(fireauth)
-    }, [])
-
-    return {
-        auth,
-        login,
-        googleLogin,
-        waitForAuth,
-        getSession,
-        logout
-    }
+  return {
+    auth,
+    login,
+    googleLogin,
+    waitForAuth,
+    getSession,
+    logout,
+  };
 }
 
-export function useAnalytics(){
-    const logSignIn = useCallback(function logSignIn(params : { uid: string, login_type: string }){
-        logEvent(analytics, 'login', params)
-    }, [])
+export function useAnalytics() {
+  const analyticsRef = useRef<Analytics>(null);
 
-    return {
-        logSignIn
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      isSupported().then((supported) => {
+        if (supported) {
+          analyticsRef.current = getAnalytics(app);
+        }
+      });
     }
+  }, []);
+
+  const logSignIn = useCallback(function logSignIn(params: {
+    uid: string;
+    login_type: string;
+  }) {
+    if (!analyticsRef?.current) return;
+    logEvent(analyticsRef!.current, "login", params);
+  },
+  []);
+
+  return {
+    logSignIn,
+  };
 }
