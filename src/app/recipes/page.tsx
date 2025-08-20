@@ -1,37 +1,9 @@
 import React from "react";
 import AddRecipeSection from "@/components/add-recipe-section";
 import RecipeGrid from "@/components/recipes/grid";
-import { cookies } from "next/headers";
-import { getBaseUrl } from "@/api-helper/base-url";
 import { RecipeProvider } from "@/providers/recipeProvider";
 
 export default async function RecipePage() {
-
-  const baseUrl = getBaseUrl();
-
-  const c = await cookies()
-
-  const token = c.get('token')
-
-  let validated = false;
-
-  if(token){
-    const data = await fetch(`${baseUrl}/api/auth/verify`, {
-      method: 'POST',
-      cache: 'no-store',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        token: token.value
-      })
-    }).then(res => res.json())
-    .catch(() => console.warn("Token Invalid"))
-
-    if(data?.valid){
-      validated = true;
-    }
-  }
 
   return (
     <RecipeProvider>
@@ -72,16 +44,11 @@ export default async function RecipePage() {
           {/* Recipe Grid */}
           <RecipeGrid />
 
-          {/* Load More Button */}
-          {/* <div className="text-center mt-12">
-            <button className="bg-orange-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-orange-700 transition-colors">
-              Load More Recipes
-            </button>
-          </div> */}
+          
         </div>
 
         {/* Add Recipe Section */}
-        { validated && (<AddRecipeSection />)}
+        <AddRecipeSection />
       </div>
     </RecipeProvider>
   );

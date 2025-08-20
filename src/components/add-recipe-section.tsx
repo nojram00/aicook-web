@@ -23,7 +23,9 @@ export default function AddRecipeSection() {
     }
   }
 
-  if(!user) console.warn("No Users Detected");
+  if(!user) {
+    return null;
+  };
 
   return (
     <section>
