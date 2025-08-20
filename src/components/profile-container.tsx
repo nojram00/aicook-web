@@ -1,21 +1,12 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
-import useFirebase from "@/hooks/useFirebase";
 import Image from "next/image";
 import { useProfile } from "@/providers/userProvider";
-
-interface UserData {
-  uid: string;
-  name: string;
-  email: string;
-  photoURL?: string;
-}
+import { logout2 } from "@/actions/auth-actions";
+import React from "react";
 
 export default function ProfileContainer() {
   const { user } = useProfile()
-  const { logout, isLoggingOut } = useAuth()
+  const [pending, startTransition] = React.useTransition()
 
   return (
     <div className="max-w-2xl mx-auto p-6">
@@ -107,11 +98,11 @@ export default function ProfileContainer() {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
-                  onClick={logout}
-                  disabled={isLoggingOut}
-                  className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  onClick={() => startTransition(() => logout2())}
+                  disabled={pending}
+                  className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:bg-red-200 transition-colors"
                 >
-                  {isLoggingOut ? "Logging out..." : "Logout"}
+                  { pending ? "Logging You Out..." : "Logout" }
                 </button>
 
                 <button className="px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors">

@@ -8,6 +8,7 @@ import { useApi } from "@/hooks/useFetch";
 import React from "react";
 import useCookie from "@/hooks/useCookies";
 import LogoutBtn from "./logout-btn";
+import ProfileIcon from "./profile-icon";
 
 export default function Header() {
   // Verify Auth:
@@ -103,7 +104,7 @@ export default function Header() {
             </div>
 
             {signedIn ? (
-              <LogoutBtn />
+              <ProfileIcon />
             ) : (
               <React.Fragment>
                 <button

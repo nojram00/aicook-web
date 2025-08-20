@@ -2,6 +2,7 @@
 
 import { useAnalytics, useFireauth } from "@/hooks/firebase";
 import useCookie from "@/hooks/useCookies";
+import { useRouter } from "next/navigation";
 import { FormEvent, forwardRef } from "react";
 
 interface SignInModalProps {
@@ -10,6 +11,8 @@ interface SignInModalProps {
 
 const Modal = forwardRef<HTMLDialogElement, SignInModalProps>(
   function SigninModal({ onClose }, ref) {
+
+    const router = useRouter();
 
     const { login, googleLogin } = useFireauth()
     const { logSignIn } = useAnalytics()
@@ -56,6 +59,8 @@ const Modal = forwardRef<HTMLDialogElement, SignInModalProps>(
                   uid: response.user.uid,
                   login_type: 'google'
                 })
+
+                router.refresh()
             }
         } catch (error) {
             console.warn(error);
