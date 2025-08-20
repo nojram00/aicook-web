@@ -23,6 +23,8 @@ export default function AddRecipeSection() {
     }
   }
 
+  if(!user) console.warn("No Users Detected");
+
   return (
     <section>
         { user && <AddRecipeFab onClick={openModal}/>}

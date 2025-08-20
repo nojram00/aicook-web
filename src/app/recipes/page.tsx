@@ -18,6 +18,10 @@ export default async function RecipePage() {
   if(token){
     const data = await fetch(`${baseUrl}/api/auth/verify`, {
       method: 'POST',
+      cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         token: token.value
       })
