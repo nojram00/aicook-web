@@ -5,6 +5,7 @@ import Link from "next/link";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { UserProvider } from "@/providers/userProvider";
+import AdScript from "@/components/ad-script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +24,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
+      <head>
+        <AdScript />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -37,6 +43,7 @@ export default function RootLayout({
           <main className="min-h-screen bg-white">{children}</main>
           <Footer />
         </UserProvider>
+        {modal}
       </body>
     </html>
   );
